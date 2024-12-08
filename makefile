@@ -18,6 +18,8 @@ logs:
 
 install: composer-install db-migrate
 
+start: up install
+
 composer-install:
 	$(DOCKER_COMPOSE) exec php composer install
 
