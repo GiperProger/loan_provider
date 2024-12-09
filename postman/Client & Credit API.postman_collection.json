@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "edcce33c-efba-4b97-84f1-4afe94603a02",
+		"name": "Client & Credit API",
+		"description": "Postman collection for managing clients and credits",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3856936"
+	},
+	"item": [
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Create Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"lastName\": \"Doe\",\n \"firstName\": \"John\",\n \"age\": 30,\n \"ssn\":123456789,\n \"address\": \"CA\",\n \"ficoScore\": 720,\n \"email\": \"john.doe@example.com\",\n \"phoneNumber\": \"+12345678901\",\n \"income\": 2000\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Client",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"lastName\": \"Smith\",\n \"address\": \"NY\",\n \"ficoScore\": 750\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Credit",
+			"item": [
+				{
+					"name": "Create Credit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"clientId\": 1,\n \"productName\": \"Personal Loan\",\n \"term\": 24,\n \"interestRate\": 5.5,\n \"amount\": 10000\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/credits",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"credits"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
