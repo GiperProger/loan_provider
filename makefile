@@ -2,19 +2,11 @@ PROJECT_NAME = credit-app
 
 DOCKER_COMPOSE = docker-compose
 
-# Основные цели
 up:
 	$(DOCKER_COMPOSE) up -d --build
 
 down:
 	$(DOCKER_COMPOSE) down
-
-restart:
-	$(DOCKER_COMPOSE) down
-	$(DOCKER_COMPOSE) up -d --build
-
-logs:
-	$(DOCKER_COMPOSE) logs -f
 
 install: composer-install db-migrate
 
@@ -27,10 +19,15 @@ db-migrate:
 	$(DOCKER_COMPOSE) exec php php bin/console doctrine:database:create --if-not-exists
 	$(DOCKER_COMPOSE) exec php php bin/console doctrine:migrations:migrate --no-interaction
 
-reset:
-	$(DOCKER_COMPOSE) down -v
-	$(DOCKER_COMPOSE) up -d --build
-	$(MAKE) install
-
 test:
 	$(DOCKER_COMPOSE) exec php php bin/phpunit
+
+db-migrate-test:
+	$(DOCKER_COMPOSE) exec php php bin/console doctrine:database:create --if-not-exists --env=test
+	$(DOCKER_COMPOSE) exec php php bin/console doctrine:migrations:migrate --no-interaction --env=test
+
+send-notifications:
+	$(DOCKER_COMPOSE) exec php php bin/console app:send-notifications
+
+static-analyse:
+	$(DOCKER_COMPOSE) exec php vendor/bin/phpstan analyse

@@ -14,8 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreditController extends AbstractController
 {
     #[Route('/api/credits', name: 'issue_credit', methods: ['POST'])]
-    public function issueCredit(Request $request, EntityManagerInterface $em, CreditService $creditService): JsonResponse
-    {
+    public function issueCredit(
+        Request $request,
+        EntityManagerInterface $em,
+        CreditService $creditService
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $client = $em->getRepository(Client::class)->find($data['clientId']);
 
@@ -25,16 +28,10 @@ class CreditController extends AbstractController
 
         $credit = $creditService->issueCredit($client, $data);
 
-        if (isset($credit['errors'])){
+        if (isset($credit['errors'])) {
             return new JsonResponse(['errors' => $credit['errors']], 400);
         }
 
         return new JsonResponse(['message' => 'Credit issued successfully'], 201);
-    }
-
-    #[Route('/api/credits', name: 'get_credits', methods: ['GET'])]
-    public function index(): JsonResponse
-    {
-        return new JsonResponse(['message' => 'Welcome to the Credit API']);
     }
 }

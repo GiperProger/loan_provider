@@ -15,21 +15,33 @@ class CreditService
     public const ALLOWED_STATES = ['CA', 'NY', 'NV'];
 
     public function __construct(
-        private CreditRepository $clientRepository,
-        private ValidatorInterface $validator,
-        private EventDispatcherInterface $eventDispatcher
-    )
-    {
+        private readonly CreditRepository         $clientRepository,
+        private readonly ValidatorInterface       $validator,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     public function issueCredit(Client $client, array $data): array
     {
-        // Проверка условий выдачи кредита
         $age = $client->getAge();
         $ficoScore = $client->getFicoScore();
         $address = $client->getAddress();
+        $income = $client->getIncome();
 
-        if ($ficoScore <= 500 || $age < 18 || $age > 60 || !in_array($address, self::ALLOWED_STATES)) {
+        //Все эти проверки в идеале вынести в отдельный класс который занимается
+        // исключительно принятием решений на основе предоставленных данных. Можно обработать отдельно каждое условие
+        //что бы было понятно по какой причине случился отказ
+
+        if ($ficoScore <= 500
+            ||
+            $age < 18
+            ||
+            $age > 60
+            ||
+            $income < 1000
+            ||
+            !in_array($address, self::ALLOWED_STATES)
+        ) {
             return ['errors' => 'Credit denied'];
         }
 
@@ -60,6 +72,9 @@ class CreditService
 
         $this->clientRepository->save($credit);
 
+        //Кидаем ивент после одобрения кредита. В нашем случае это нужно для создания уведомления,
+        // в последствии можно добавить что угодно. То же самое можно сделать на отказ в кредите и
+        // перед тем как принимается решение по выдаче.
         $event = new CreditApprovedEvent($credit);
         $this->eventDispatcher->dispatch($event);
 

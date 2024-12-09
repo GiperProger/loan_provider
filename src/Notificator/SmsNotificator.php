@@ -7,6 +7,6 @@ class SmsNotificator implements INotification
 
     public static function sendNotification()
     {
-
+        //Логика отправки sms сообщения
     }
 }

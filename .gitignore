@@ -29,3 +29,7 @@ db_data/
 # Ignore IDE and system files
 .idea/
 .DS_Store
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -53,6 +54,10 @@ class Client extends BaseModel
      */
     #[ORM\OneToMany(targetEntity: Credit::class, mappedBy: 'client')]
     private Collection $credits;
+
+    #[Assert\NotBlank]
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $income = null;
 
 
     public function __construct()
@@ -187,6 +192,18 @@ class Client extends BaseModel
                 $credit->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIncome(): ?int
+    {
+        return $this->income;
+    }
+
+    public function setIncome(int $income): static
+    {
+        $this->income = $income;
 
         return $this;
     }

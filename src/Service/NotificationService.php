@@ -22,19 +22,20 @@ class NotificationService
         SmsNotificator::class
     ];
 
+    /**
+     * @throws LogicException
+     * @return void
+     */
     public function sendUserNotification(): void
     {
         //Берем из базы уведомления порциями и отсылаем пользователям.
         //Альтернативный вариант - использовать очереди
-
         $notifications = $this->notificationRepository->findNotificationsToSend();
 
-        /** @var Notification $notification */
         foreach ($notifications as $notification) {
             /** @var INotification $notificator */
             foreach (self::NOTIFICATORS as $notificator) {
-
-                if(!is_subclass_of($notification, INotification::class)){
+                if (!is_subclass_of($notificator, INotification::class)) {
                     throw new LogicException("Класс {$notificator} должен реализовать интерфейс INotification");
                 }
 
@@ -45,7 +46,6 @@ class NotificationService
             $this->notificationRepository->save($notification);
         }
     }
-
     public function createNotification(Client $client, string $notificationText): void
     {
         $notification = new Notification();
@@ -53,6 +53,5 @@ class NotificationService
         $notification->setText($notificationText);
 
         $this->notificationRepository->save($notification);
-
     }
 }

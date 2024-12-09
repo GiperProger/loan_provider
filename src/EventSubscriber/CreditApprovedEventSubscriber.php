@@ -28,6 +28,7 @@ readonly class CreditApprovedEventSubscriber implements EventSubscriberInterface
 
         $this->notificationService->createNotification(
             $client,
-            'Вам одобрен кредит по продукту ' . $productName);
+            'Вам одобрен кредит по продукту ' . $productName
+        );
     }
 }

@@ -11,8 +11,7 @@ readonly class ClientService
     public function __construct(
         private ClientRepository $clientRepository,
         private ValidatorInterface $validator
-    )
-    {
+    ) {
     }
 
     public function createClient(array $data): array
@@ -26,8 +25,8 @@ readonly class ClientService
         $client->setFicoScore($data['ficoScore'] ?? null);
         $client->setEmail($data['email'] ?? null);
         $client->setPhoneNumber($data['phoneNumber'] ?? null);
+        $client->setIncome($data['income'] ?? null);
 
-        // Валидация
         $errors = $this->validator->validate($client);
 
         if (count($errors) > 0) {
@@ -49,6 +48,7 @@ readonly class ClientService
         $client->setFicoScore($data['ficoScore'] ?? $client->getFicoScore());
         $client->setEmail($data['email'] ?? $client->getEmail());
         $client->setPhoneNumber($data['phoneNumber'] ?? $client->getPhoneNumber());
+        $client->setIncome($data['income'] ?? $client->getIncome());
 
         // Валидация данных
         $errors = $this->validator->validate($client);
