@@ -6,7 +6,7 @@ use App\Repository\CreditRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CreditRepository::class)]
-class Credit
+class Credit extends BaseModel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -8,35 +8,44 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-class Client
+class Client extends BaseModel
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
+    #[Assert\Range(min: 18, max: 60)]
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
+    #[Assert\Range(min: 18, max: 60)]
     #[ORM\Column]
     private ?int $age = null;
 
     #[ORM\Column(length: 9)]
     private ?string $ssn = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['CA', 'NY', 'NV'], message: "Credits are available only in CA, NY, and NV.")]
+    #[ORM\Column]
     private ?string $address = null;
 
     #[ORM\Column]
     private ?int $ficoScore = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    #[ORM\Column]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex("/^\+1\d{10}$/")]
+    #[ORM\Column]
     private ?string $phoneNumber = null;
 
     /**
@@ -44,6 +53,7 @@ class Client
      */
     #[ORM\OneToMany(targetEntity: Credit::class, mappedBy: 'client')]
     private Collection $credits;
+
 
     public function __construct()
     {
