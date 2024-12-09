@@ -39,7 +39,7 @@ class NotificationService
                     throw new LogicException("Класс {$notificator} должен реализовать интерфейс INotification");
                 }
 
-                $notificator::sendNotification();
+                $notificator::sendNotification($notification);
             }
 
             $notification->setSent(true);
